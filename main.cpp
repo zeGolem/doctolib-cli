@@ -19,6 +19,7 @@ template <> std::string get_name(doctolib::place const &place)
 template <typename T>
 T const pick(std::vector<T> const &list, std::string const &selection_name)
 {
+	if (list.size() == 1) return list[0];
 	std::cout << '\n';
 	uint16_t i = 1;
 	for (auto const &item : list) {
