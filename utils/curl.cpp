@@ -18,7 +18,7 @@ std::string const get(std::string const &url)
 {
 	std::string buffer;
 	CURL *curl = curl_easy_init();
-	curl_easy_setopt(curl, CURLOPT_URL, url_encode(url).c_str());
+	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer_append);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
 	curl_easy_perform(curl);
