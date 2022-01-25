@@ -16,6 +16,11 @@ template <> std::string get_name(doctolib::place const &place)
 	return place.label;
 }
 
+template <> std::string get_name(doctolib::profile const &profile)
+{
+	return profile.name_with_title;
+}
+
 template <typename T>
 T const pick(std::vector<T> const &list, std::string const &selection_name)
 {
@@ -57,17 +62,19 @@ void find_specialists(std::string const &speciality_query,
 	}
 }
 
-void find_profile(std::string const &profile_query)
+void show_profile(std::string const &profile_query)
 {
 	doctolib::doctolib_api api("https://www.doctolib.fr");
 
-	auto const profiles = api.get_profiles(profile_query);
-	for (auto const &profile : profiles) {
-		std::cout << profile.name_with_title << " -- " << profile.kind << '\n';
-		std::cout << profile.city << '\n';
-		std::cout << "https://www.doctolib.fr" << profile.link << '\n';
-		std::cout << "====================\n";
-	}
+	auto const profile = pick(api.get_profiles(profile_query), "profile");
+	auto const full_profile = api.get_full_profile(profile);
+
+	std::cout << full_profile.name_with_title << " (" << full_profile.subtitle
+	          << ")\n";
+	std::cout << "====================\n";
+	std::cout << full_profile.bio << "\n\n";
+	std::cout << "Telehealth: " << (full_profile.telehealth ? "Yes" : "No")
+	          << '\n';
 }
 
 int main(int argc, char **argv)
@@ -77,8 +84,8 @@ int main(int argc, char **argv)
 	if (std::string(argv[1]) == "find-specialist") {
 		if (argc < 3) return -1;
 		find_specialists(argv[2], argv[3]);
-	} else if (std::string(argv[1]) == "find-profile") {
+	} else if (std::string(argv[1]) == "show-profile") {
 		if (argc < 2) return -1;
-		find_profile(argv[2]);
+		show_profile(argv[2]);
 	}
 }

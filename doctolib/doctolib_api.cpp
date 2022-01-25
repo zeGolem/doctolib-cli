@@ -70,4 +70,11 @@ std::vector<doctor> const doctolib_api::get_doctors_for_speciality(
 		doctors.push_back(doctor::from_json(doc_json));
 	return doctors;
 }
+
+full_profile const doctolib_api::get_full_profile(const profile &profile)
+{
+	auto const raw_data = get(profile.link + ".json");
+	auto const json = nlohmann::json::parse(raw_data);
+	return full_profile::from_json(json["data"]["profile"]);
+}
 } // namespace doctolib

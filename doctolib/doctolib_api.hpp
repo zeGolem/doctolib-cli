@@ -53,6 +53,29 @@ struct profile {
 	}
 };
 
+struct full_profile {
+	uint16_t id;
+	std::string name_with_title;
+	std::string bio;
+	std::string website_url;
+	std::string country;
+	std::string subtitle;
+	bool telehealth;
+
+	static full_profile from_json(nlohmann::json const &j)
+	{
+		full_profile p{};
+		p.id = j.at("id").get<uint16_t>();
+		p.name_with_title = j.at("name_with_title").get<std::string>();
+		p.bio = j.at("bio").get<std::string>();
+		p.website_url = j.at("website_url").get<std::string>();
+		p.country = j.at("country").get<std::string>();
+		p.subtitle = j.at("subtitle").get<std::string>();
+		p.telehealth = j.at("telehealth").get<bool>();
+		return p;
+	}
+};
+
 struct speciality {
 	uint16_t value;
 	std::string slug;
@@ -134,5 +157,7 @@ class doctolib_api
 
 	std::vector<doctor> const get_doctors_for_speciality(
 	    speciality const &speciality, place const &place);
+
+	full_profile const get_full_profile(profile const &profile);
 };
 } // namespace doctolib
