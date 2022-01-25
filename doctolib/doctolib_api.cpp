@@ -16,8 +16,8 @@ std::string const doctolib_api::get(std::string const &url)
 std::vector<place> const doctolib_api::get_places(
     std::string const &search_term)
 {
-	auto const raw_data =
-	    get("/patient_app/place_autocomplete.json?query=" + search_term);
+	auto const raw_data = get("/patient_app/place_autocomplete.json?query=" +
+	                          curl::url_encode(search_term));
 	auto const json = nlohmann::json::parse(raw_data);
 	std::vector<place> places;
 	for (auto const &place_json : json)
@@ -28,8 +28,8 @@ std::vector<place> const doctolib_api::get_places(
 std::vector<speciality> const doctolib_api::get_specialities(
     std::string const &search_term)
 {
-	auto const raw_data =
-	    get("/api/searchbar/autocomplete.json?search=" + search_term);
+	auto const raw_data = get("/api/searchbar/autocomplete.json?search=" +
+	                          curl::url_encode(search_term));
 	auto const json = nlohmann::json::parse(raw_data);
 	std::vector<speciality> specialities;
 	for (auto const &specialty_json : json.at("specialities"))
@@ -40,8 +40,8 @@ std::vector<speciality> const doctolib_api::get_specialities(
 std::vector<profile> const doctolib_api::get_profiles(
     const std::string &search_term)
 {
-	auto const raw_data =
-	    get("/api/searchbar/autocomplete.json?search=" + search_term);
+	auto const raw_data = get("/api/searchbar/autocomplete.json?search=" +
+	                          curl::url_encode(search_term));
 	auto const json = nlohmann::json::parse(raw_data);
 	std::vector<profile> profiles;
 	for (auto const &profile_json : json["profiles"])
