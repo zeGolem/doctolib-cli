@@ -7,4 +7,5 @@
 namespace curl
 {
 std::string const get(std::string const &url);
+std::string const url_encode(std::string const &input);
 } // namespace curl
